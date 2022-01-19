@@ -21,6 +21,8 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
   run_tests:
+    name: test
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
