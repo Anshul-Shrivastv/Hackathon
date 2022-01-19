@@ -41,29 +41,9 @@ jobs:
         run: mvn -B test --file pom.xml
       - name: Run other test cases
         run: mvn test -Dtest=WelcomeControllerTest
-      - name: Upload Unit Test Results
-        if: always()
-        uses: actions/upload-artifact@v2
-        with:
-          name: Unit Test Results 
-          path: junitTest.xml
-  
-  publish-test-results:
-    name: "Publish Unit Tests Results"
-    needs: [build,run_tests]
-    runs-on: ubuntu-latest
-    if: always()
-
-    steps:
-      - name: Download Artifacts
-        uses: actions/download-artifact@v2
-        with:
-          path: artifacts
-
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v1
-        with:
-          files: artifacts/**/*.xml
+      - name: Publish Test Report
+        if: ${{ always() }}
+        uses: scacap/action-surefire-report@v1
   deploy:
     name: Deploy
     needs: [build,run_tests]
